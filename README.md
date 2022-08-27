@@ -13,7 +13,8 @@
 - `GetClientsFromRedis`: получить список всех пользователей из redis за последнюю минуту.
 
 ### Как протестировать у себя
-- Нужно установить окружение и поднять его у себя. [Тут пример как это делал я](https://github.com/babtiss/grpc_proj/tree/master/assets)
+- Клонируем репозиторий: `git clone https://github.com/babtiss/grpc_proj`
+- Устанавливаем окружение. Поднимаем нужные ресурсы. [Тут пример как это делал я](https://github.com/babtiss/grpc_proj/tree/master/assets)
 - Настроить конфиг для postgres в environments (`host=;port=;user=;password=;dbname=;sslmode=`)
 - Запускаем `cmd/server/main.go` с нашими настройками.
 - Для тестирования работы ручек используем утилиту `evans` из корня проекта:
