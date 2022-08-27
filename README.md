@@ -17,7 +17,9 @@
 - Настроить конфиг для postgres в environments (`host=;port=;user=;password=;dbname=;sslmode=`)
 - Запускаем `cmd/server/main.go` с нашими настройками.
 - Для тестирования работы ручек используем утилиту `evans` из корня проекта:
-```evans .\proto\clientbase.proto -p 8000```
+```
+evans .\proto\clientbase.proto -p 8000
+```
 - Дергаем ручки командой `call < имя ручки > `
 - Смотрим в логи терминала и развернутых серверов что всё работает успешно.
 
