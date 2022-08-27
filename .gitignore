@@ -1,0 +1,5 @@
+.idea
+.env
+.database
+.DS_Store
+.exe
