@@ -10,9 +10,9 @@ protoc -I proto --go_out=pkg/api --go-grpc_out=pkg/api clientbase.proto
 ```
 
 ### kafka + zookeeper (на виртуальную Ubuntu):
+
 #### Установка:
 ```
-wget https://archive.apache.org/dist/kafka/3.0.0/kafka_2.13-3.0.0.tgz
 tar xzf kafka_2.13-3.0.0.tgz
 mv kafka_2.13-3.0.0 ~
 mv kafka_2.13-3.0.0 kafka
