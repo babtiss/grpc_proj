@@ -10,30 +10,30 @@ type Config interface {
 }
 
 type PostgresConfig struct {
-	Host         string
-	Port         string
-	User         string
-	Password     string
-	Dbname       string
-	SSLmode      string
+	host         string
+	port         string
+	user         string
+	password     string
+	dbname       string
+	sslmode      string
 	AdditionalDB string
 	DB           string
 }
 
 func (c *PostgresConfig) GetSqlPath() string {
 	return fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
-		c.Host, c.Port, c.User, c.Password, c.Dbname, c.SSLmode)
+		c.host, c.port, c.user, c.password, c.dbname, c.sslmode)
 }
 
 func NewConfig() (*PostgresConfig, error) {
 	// можно за настройками ходить курлом в 'cекретницу', но я по-простому сделал
 	return &PostgresConfig{
-		Host:         os.Getenv("host"),
-		Port:         os.Getenv("port"),
-		User:         os.Getenv("user"),
-		Password:     os.Getenv("password"),
-		Dbname:       os.Getenv("dbname"),
-		SSLmode:      os.Getenv("sslmode"),
+		host:         os.Getenv("host"),
+		port:         os.Getenv("port"),
+		user:         os.Getenv("user"),
+		password:     os.Getenv("password"),
+		dbname:       os.Getenv("dbname"),
+		sslmode:      os.Getenv("sslmode"),
 		AdditionalDB: "clickhouse",
 		DB:           "postgres",
 	}, nil

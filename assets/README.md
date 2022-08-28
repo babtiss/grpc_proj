@@ -1,7 +1,7 @@
-## Используемые ресурсы и их функционал
-> TODO: докеризировать
+# Используемые ресурсы и их функционал
+> TODO: докеризировать сборку
 
-### Protobuf
+## Protobuf
 
 #### Генерация pb файлов в наш проект (Windows).
 Из корня проекта выполнить:
@@ -9,8 +9,9 @@
 protoc -I proto --go_out=pkg/api --go-grpc_out=pkg/api clientbase.proto
 ```
 
-### kafka + zookeeper (на виртуальную Ubuntu):
+## kafka + zookeeper (на виртуальную Ubuntu):
 [Устанавливаем](https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-20-04)
+
 Список команд:
 #### Запуск zookeeper:
 ```
@@ -35,24 +36,22 @@ protoc -I proto --go_out=pkg/api --go-grpc_out=pkg/api clientbase.proto
 ```
 
 
-### ClickHouse (на виртуальную Ubuntu):
+## ClickHouse (на виртуальную Ubuntu):
 
 [Качаем и собираем файл по туториалу](https://clickhouse.com/docs/en/quick-start)
 [Или по другому туториалу](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-clickhouse-on-debian-10-ru)
 
 ## СУБД
-В postgres и clickhouse создаем бд:
+В postgres и clickhouse создаем бд и таблицы:
 
-Database = 'clientbase'
-
-Для sql такая схема
+Для sql использвал схему:
 ```
 CREATE TABLE IF NOT EXISTS Client
 (
 name String
 )
 ```
-Для clickhouse добавляем новый Engine
+Для clickhouse добавляем Engine
 ```
 CREATE TABLE IF NOT EXISTS Client
 (

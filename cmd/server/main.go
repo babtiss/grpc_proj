@@ -19,7 +19,6 @@ const (
 )
 
 func main() {
-
 	cfg, err := config.NewConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -38,25 +37,25 @@ func main() {
 	}
 	defer clickhouse.Close()
 
-	redisClient, err := cache.NewRedis()
+	redis, err := cache.NewRedis()
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	defer redisClient.Close()
+	defer redis.Close()
 
-	kafkaConnect, err := logger.NewKafka()
+	kafka, err := logger.NewKafka()
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	defer kafkaConnect.Close()
+	defer kafka.Close()
 	grpcServer := grpc.NewServer()
 	api.RegisterClientbaseServer(grpcServer, &server.GRPCServer{
 		Repository:           repository.NewRepository(db, cfg.DB),
 		AdditionalRepository: repository.NewRepository(clickhouse, cfg.AdditionalDB),
-		Cache:                cache.NewCache(redisClient),
-		Logger:               logger.NewLogger(kafkaConnect),
+		Cache:                cache.NewCache(redis),
+		Logger:               logger.NewLogger(kafka),
 	})
 
 	listener, err := net.Listen("tcp", AddressForListen)
