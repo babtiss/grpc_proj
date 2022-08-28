@@ -14,18 +14,20 @@ func NewClientClickhouse(db *sql.DB) *ClientClickhouse {
 }
 
 func (c *ClientClickhouse) Add(entity ClientEntity) error {
-	begin, err := c.db.Begin()
+	tx, err := c.db.Begin()
 	if err != nil {
-		fmt.Printf("begin error: %v", err)
 		return fmt.Errorf("clickhouse begin error: %v", err)
 	}
-	_, err = begin.Exec("insert into queue (Name) values ($1)", entity.Name)
+	stmt, err := tx.Prepare("INSERT INTO Client (name) values ($1)")
 	if err != nil {
-		return fmt.Errorf("clickhouse add data error: %v", err)
+		return fmt.Errorf("clickhouse prepare insert error: %v", err)
 	}
-	err = begin.Commit()
+	_, err = stmt.Exec(entity.Name)
 	if err != nil {
-		fmt.Printf("comit error: %v", err)
+		return fmt.Errorf("clickhouse exec insert error: %v", err)
+	}
+	err = tx.Commit()
+	if err != nil {
 		return fmt.Errorf("clickhouse commit error: %v", err)
 	}
 	return err
@@ -34,3 +36,15 @@ func (c *ClientClickhouse) Add(entity ClientEntity) error {
 func (c *ClientClickhouse) Delete(entity ClientEntity) error { return nil }
 
 func (c *ClientClickhouse) GetClients() ([]ClientEntity, error) { return nil, nil }
+
+//if err != nil {
+//	return fmt.Errorf("clickhouse begin error: %v", err)
+//}
+//_, err = begin.Exec("CREATE TABLE IF NOT EXISTS Client (Name String) ENGINE = Kafka('localhost:9092', 'test', 'test', 'JSONEachRow');",
+//	logger.MyKafkaAddress, logger.Topic)
+//if err != nil {
+//	return fmt.Errorf("clickhouse create clientbase table error: %v", err)
+//}
+//err = begin.Commit()
+//
+//begin, err = c.db.Begin()

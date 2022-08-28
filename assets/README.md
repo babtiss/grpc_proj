@@ -1,5 +1,5 @@
-## Всё что может понадобится для работы
-
+## Используемые ресурсы и их функционал
+> TODO: докеризировать
 
 ### Protobuf
 
@@ -10,13 +10,8 @@ protoc -I proto --go_out=pkg/api --go-grpc_out=pkg/api clientbase.proto
 ```
 
 ### kafka + zookeeper (на виртуальную Ubuntu):
-
-#### Установка:
-```
-tar xzf kafka_2.13-3.0.0.tgz
-mv kafka_2.13-3.0.0 ~
-mv kafka_2.13-3.0.0 kafka
-```
+[Устанавливаем](https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-20-04)
+Список команд:
 #### Запуск zookeeper:
 ```
 ~/kafka/bin/zookeeper-server-start.sh ~/kafka/config/zookeeper.properties
@@ -42,10 +37,25 @@ mv kafka_2.13-3.0.0 kafka
 
 ### ClickHouse (на виртуальную Ubuntu):
 
-[качаем и собираем файл по туториалу](https://clickhouse.com/docs/en/quick-start)
+[Качаем и собираем файл по туториалу](https://clickhouse.com/docs/en/quick-start)
+[Или по другому туториалу](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-clickhouse-on-debian-10-ru)
 
-#### clickhouse run:
+## СУБД
+В postgres и clickhouse создаем бд:
+
+Database = 'clientbase'
+
+Для sql такая схема
 ```
-cd Clickhouse/build
-./clickhouse server
+CREATE TABLE IF NOT EXISTS Client
+(
+name String
+)
+```
+Для clickhouse добавляем новый Engine
+```
+CREATE TABLE IF NOT EXISTS Client
+(
+    name String
+) ENGINE = Kafka(`localhost:9092`, `test`, 'test', 'JSONEachRow')
 ```
