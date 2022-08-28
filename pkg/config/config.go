@@ -34,7 +34,7 @@ func NewConfig() (*PostgresConfig, error) {
 		Password:     os.Getenv("password"),
 		Dbname:       os.Getenv("dbname"),
 		SSLmode:      os.Getenv("sslmode"),
-		AdditionalDB: "postgres",
-		DB:           "clickhouse",
+		AdditionalDB: "clickhouse",
+		DB:           "postgres",
 	}, nil
 }

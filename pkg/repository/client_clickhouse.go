@@ -33,22 +33,9 @@ func (c *ClientClickhouse) Add(entity ClientEntity) error {
 	if err := c.db.Ping(); err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func (c *ClientClickhouse) Delete(entity ClientEntity) error { return nil }
 
 func (c *ClientClickhouse) GetClients() ([]ClientEntity, error) { return nil, nil }
-
-//if err != nil {
-//	return fmt.Errorf("clickhouse begin error: %v", err)
-//}
-//_, err = begin.Exec("CREATE TABLE IF NOT EXISTS Client (Name String) ENGINE = Kafka('localhost:9092', 'test', 'test', 'JSONEachRow');",
-//	logger.MyKafkaAddress, logger.Topic)
-//if err != nil {
-//	return fmt.Errorf("clickhouse create clientbase table error: %v", err)
-//}
-//err = begin.Commit()
-//
-//begin, err = c.db.Begin()
