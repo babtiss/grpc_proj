@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type ClientClickhouse struct {
@@ -13,27 +14,25 @@ func NewClientClickhouse(db *sql.DB) *ClientClickhouse {
 }
 
 func (c *ClientClickhouse) Add(entity ClientEntity) error {
-	//tx, err := c.db.Begin()
-	//if err != nil {
-	//	return fmt.Errorf("clickhouse begin error: %v", err)
-	//}
-	//stmt, err := tx.Prepare("INSERT INTO Client (Name) values ($1)")
-	//if err != nil {
-	//	return fmt.Errorf("clickhouse prepare insert error: %v", err)
-	//}
-	//_, err = stmt.Exec(entity.Name)
-	//if err != nil {
-	//	return fmt.Errorf("clickhouse exec insert error: %v", err)
-	//}
-	//err = tx.Commit()
-	//if err != nil {
-	//	return fmt.Errorf("clickhouse commit error: %v", err)
-	//}
+	tx, err := c.db.Begin()
+	if err != nil {
+		return fmt.Errorf("clickhouse begin error: %v", err)
+	}
+	stmt, err := tx.Prepare("INSERT INTO Client (Name) values ($1)")
+	if err != nil {
+		return fmt.Errorf("clickhouse prepare insert error: %v", err)
+	}
+	_, err = stmt.Exec(entity.Name)
+	if err != nil {
+		return fmt.Errorf("clickhouse exec insert error: %v", err)
+	}
+	err = tx.Commit()
+	if err != nil {
+		return fmt.Errorf("clickhouse commit error: %v", err)
+	}
 	if err := c.db.Ping(); err != nil {
 		return err
 	}
-
-	c.db.QueryRow(`INSERT INTO Client(name) VALUES ($1) returning name`, entity.Name)
 
 	return nil
 }
