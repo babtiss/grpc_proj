@@ -14,10 +14,6 @@ import (
 	"net"
 )
 
-const (
-	AddressForListen = "127.0.0.1:8000"
-)
-
 func main() {
 	cfg, err := config.NewConfig()
 	if err != nil {
@@ -52,19 +48,19 @@ func main() {
 	defer kafka.Close()
 	grpcServer := grpc.NewServer()
 	api.RegisterClientbaseServer(grpcServer, &server.GRPCServer{
-		Repository:           repository.NewRepository(db, cfg.DB),
-		AdditionalRepository: repository.NewRepository(clickhouse, cfg.AdditionalDB),
+		Repository:           repository.NewRepository(db, cfg.DB.DriverName),
+		AdditionalRepository: repository.NewRepository(clickhouse, cfg.AdditionalDB.DriverName),
 		Cache:                cache.NewCache(redis),
 		Logger:               logger.NewLogger(kafka),
 	})
 
-	listener, err := net.Listen("tcp", AddressForListen)
+	listener, err := net.Listen("tcp", cfg.App.Addressforlisten)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	fmt.Printf("listening at %v", AddressForListen)
+	fmt.Printf("listening at %v", cfg.App.Addressforlisten)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
 		return

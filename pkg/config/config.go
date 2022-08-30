@@ -2,39 +2,67 @@ package config
 
 import (
 	"fmt"
-	"os"
+)
+
+const (
+	configPath = "configs/config.yml"
 )
 
 type Config interface {
 	GetSqlPath() string
 }
 
-type PostgresConfig struct {
-	host         string
-	port         string
-	user         string
-	password     string
-	dbname       string
-	sslmode      string
-	AdditionalDB string
-	DB           string
+type MainConfig struct {
+	AdditionalDB AdditionalDB
+	DB           DB
+	App          App
 }
 
-func (c *PostgresConfig) GetSqlPath() string {
+type App struct {
+	Addressforlisten string
+}
+
+type DB struct {
+	DriverName string
+	host       string
+	port       string
+	user       string
+	password   string
+	dbname     string
+	sslmode    string
+}
+
+type AdditionalDB struct {
+	DriverName string
+}
+
+func (c *MainConfig) GetSqlPath() string {
 	return fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
-		c.host, c.port, c.user, c.password, c.dbname, c.sslmode)
+		c.DB.host, c.DB.port, c.DB.user, c.DB.password, c.DB.dbname, c.DB.sslmode)
 }
 
-func NewConfig() (*PostgresConfig, error) {
-	// можно за настройками ходить курлом в 'cекретницу', но я по-простому сделал
-	return &PostgresConfig{
-		host:         os.Getenv("host"),
-		port:         os.Getenv("port"),
-		user:         os.Getenv("user"),
-		password:     os.Getenv("password"),
-		dbname:       os.Getenv("dbname"),
-		sslmode:      os.Getenv("sslmode"),
-		AdditionalDB: "clickhouse",
-		DB:           "postgres",
+func NewConfig() (*MainConfig, error) {
+
+	cfg, err := ParseConfigFile()
+	if err != nil {
+		return nil, err
+	}
+
+	return &MainConfig{
+		App: App{
+			Addressforlisten: cfg["app"]["addressforlisten"],
+		},
+		AdditionalDB: AdditionalDB{
+			DriverName: cfg["additional_db"]["drivername"],
+		},
+		DB: DB{
+			DriverName: cfg["db"]["drivername"],
+			host:       cfg["db"]["host"],
+			port:       cfg["db"]["port"],
+			user:       cfg["db"]["user"],
+			password:   cfg["db"]["password"],
+			dbname:     cfg["db"]["dbname"],
+			sslmode:    cfg["db"]["sslmode"],
+		},
 	}, nil
 }
