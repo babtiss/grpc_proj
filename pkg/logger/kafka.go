@@ -4,22 +4,22 @@ import (
 	"context"
 	"fmt"
 	"github.com/segmentio/kafka-go"
+	"grpcProject/pkg/config"
 	"time"
 )
 
 const (
-	Topic          = "test"
-	MyKafkaAddress = "localhost:9092"
+	Topic = "test"
 )
 
-func NewKafka() (*kafka.Conn, error) {
-	p, err := kafka.DefaultDialer.LookupPartition(context.TODO(), "tcp", MyKafkaAddress, Topic, 0)
+func NewKafka(config config.Config) (*kafka.Conn, error) {
+	p, err := kafka.DefaultDialer.LookupPartition(context.TODO(), "tcp", config.GetDsnLogger(), Topic, 0)
 	if err != nil {
 		return nil, fmt.Errorf("can not lookup partition: %v", err)
 	}
 	//I had problems assigning a host, so I change it manually
-	p.Leader.Host = "localhost"
-	conn, err := kafka.DialPartition(context.Background(), "tcp", MyKafkaAddress, p)
+	p.Leader.Host = config.GetHostLogger()
+	conn, err := kafka.DialPartition(context.Background(), "tcp", config.GetDsnLogger(), p)
 	if err != nil {
 		return nil, fmt.Errorf("partition error: %v", err)
 	}

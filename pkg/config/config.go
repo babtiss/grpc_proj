@@ -5,17 +5,24 @@ import (
 )
 
 const (
-	configPath = "configs/config.yml"
+	configPath      = "configs/config.yml"
+	configLocalPath = "configs/config_local.yml"
 )
 
 type Config interface {
-	GetSqlPath() string
+	GetDsnDB() string
+	GetDsnAddDB() string
+	GetDsnLogger() string
+	GetHostLogger() string
+	GetDsnCache() string
 }
 
 type MainConfig struct {
 	AdditionalDB AdditionalDB
 	DB           DB
 	App          App
+	Logger       Logger
+	Cache        Cache
 }
 
 type App struct {
@@ -34,11 +41,39 @@ type DB struct {
 
 type AdditionalDB struct {
 	DriverName string
+	dsn        string
 }
 
-func (c *MainConfig) GetSqlPath() string {
+type Logger struct {
+	DriverName string
+	dsn        string
+	host       string
+}
+
+type Cache struct {
+	DriverName string
+	dsn        string
+}
+
+func (c *MainConfig) GetDsnDB() string {
 	return fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v",
 		c.DB.host, c.DB.port, c.DB.user, c.DB.password, c.DB.dbname, c.DB.sslmode)
+}
+
+func (c *MainConfig) GetDsnAddDB() string {
+	return c.AdditionalDB.dsn
+}
+
+func (c *MainConfig) GetDsnLogger() string {
+	return c.Logger.dsn
+}
+
+func (c *MainConfig) GetHostLogger() string {
+	return c.Logger.host
+}
+
+func (c *MainConfig) GetDsnCache() string {
+	return c.Cache.dsn
 }
 
 func NewConfig() (*MainConfig, error) {
@@ -54,6 +89,16 @@ func NewConfig() (*MainConfig, error) {
 		},
 		AdditionalDB: AdditionalDB{
 			DriverName: cfg["additional_db"]["drivername"],
+			dsn:        cfg["additional_db"]["dsn"],
+		},
+		Logger: Logger{
+			DriverName: cfg["logger"]["drivername"],
+			dsn:        cfg["logger"]["dsn"],
+			host:       cfg["logger"]["host"],
+		},
+		Cache: Cache{
+			DriverName: cfg["cache"]["drivername"],
+			dsn:        cfg["cache"]["dsn"],
 		},
 		DB: DB{
 			DriverName: cfg["db"]["drivername"],

@@ -1,5 +1,5 @@
 db:
-  host: "db"
+  host: "localhost"
   port: "5432"
   user: "postgres"
   password: "21052002"
@@ -9,16 +9,16 @@ db:
 
 additional_db:
   drivername: "clickhouse"
-  dsn: "tcp://clickhouse:9000?debug=true"
+  dsn: "tcp://127.0.0.1:9000?debug=true"
 
 app:
   addressforlisten: "127.0.0.1:8000"
 
 logger:
   drivername: "kafka"
-  dsn: "kafka:9092"
-  host: "kafka"
+  dsn: "localhost:9092"
+  host: "localhost"
 
 cache:
   drivername: "redis"
-  dsn: "redis:6379"
+  dsn: "127.0.0.1:6379"

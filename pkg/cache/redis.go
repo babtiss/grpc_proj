@@ -3,18 +3,18 @@ package cache
 import (
 	"fmt"
 	"github.com/go-redis/redis"
+	"grpcProject/pkg/config"
 	"time"
 )
 
 const (
 	RedisCashNameClients = "clients"
 	RedisExpireTime      = 60 * time.Second
-	RedisConnectAddress  = "127.0.0.1:6379"
 )
 
-func NewRedis() (*redis.Client, error) {
+func NewRedis(config config.Config) (*redis.Client, error) {
 	rc := redis.NewClient(&redis.Options{
-		Addr:     RedisConnectAddress,
+		Addr:     config.GetDsnCache(),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})

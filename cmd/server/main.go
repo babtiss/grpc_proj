@@ -27,20 +27,20 @@ func main() {
 	}
 	defer db.Close()
 
-	clickhouse, err := repository.NewClickhouse()
+	clickhouse, err := repository.NewClickhouse(cfg)
 	if err != nil {
 		return
 	}
 	defer clickhouse.Close()
 
-	redis, err := cache.NewRedis()
+	redis, err := cache.NewRedis(cfg)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 	defer redis.Close()
 
-	kafka, err := logger.NewKafka()
+	kafka, err := logger.NewKafka(cfg)
 	if err != nil {
 		log.Fatal(err)
 		return

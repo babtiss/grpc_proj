@@ -8,7 +8,7 @@ import (
 )
 
 func NewPostgresDataBase(config config.Config) (*sql.DB, error) {
-	connStr := config.GetSqlPath()
+	connStr := config.GetDsnDB()
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("could not open database: %v", err)

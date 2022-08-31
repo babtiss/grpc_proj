@@ -25,5 +25,8 @@ func ParseConfigFile() (CfgMap, error) {
 }
 
 func fileRead() ([]byte, error) {
+	if os.Getenv("RUN_MODE") == "local" {
+		return os.ReadFile(configLocalPath)
+	}
 	return os.ReadFile(configPath)
 }

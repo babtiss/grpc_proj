@@ -4,12 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/ClickHouse/clickhouse-go"
+	"grpcProject/pkg/config"
 )
 
-const ClickHouseTCPConnect = "tcp://127.0.0.1:9000?debug=true"
-
-func NewClickhouse() (*sql.DB, error) {
-	connect, err := sql.Open("clickhouse", ClickHouseTCPConnect)
+func NewClickhouse(config config.Config) (*sql.DB, error) {
+	connect, err := sql.Open("clickhouse", config.GetDsnAddDB())
 	if err != nil {
 		return nil, fmt.Errorf("open clickhouse error: %v", err)
 	}
