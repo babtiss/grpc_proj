@@ -10,6 +10,7 @@
 #### Запуск kafka:
 ```
 ~/kafka/bin/kafka-server-start.sh ~/kafka/config/server.properties
+```
 
 #### Если нужно потестить в работу в cmd:
 ```
