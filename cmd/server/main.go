@@ -29,6 +29,7 @@ func main() {
 
 	clickhouse, err := repository.NewClickhouse(cfg)
 	if err != nil {
+		log.Fatal(err)
 		return
 	}
 	defer clickhouse.Close()

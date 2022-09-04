@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"log"
 	"os"
 )
 
@@ -25,8 +26,11 @@ func ParseConfigFile() (CfgMap, error) {
 }
 
 func fileRead() ([]byte, error) {
-	if os.Getenv("RUN_MODE") == "local" {
+	runMode := os.Getenv("RUN_MODE")
+	if runMode == "local" {
+		log.Println("RUN_MODE = LOCAL")
 		return os.ReadFile(configLocalPath)
 	}
+	log.Println("RUN_MODE = ANOTHER")
 	return os.ReadFile(configPath)
 }

@@ -32,7 +32,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./db:/var/lib/clickhouse
+      - ./.database/clickhouse/data:/var/lib/clickhouse
 
   zookeeper:
     image: wurstmeister/zookeeper:latest
@@ -42,7 +42,7 @@ services:
   redis:
     image: redis:alpine
     volumes:
-      - ./redis/redis-data:/data
+      - ./.database/clickhouse/data:/data
     ports:
       - 6379:6379
 
