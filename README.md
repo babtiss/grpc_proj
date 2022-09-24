@@ -8,11 +8,9 @@
 
 ### Запуск:
 
-1. Через `Docker`
-  - `git clone https://github.com/babtiss/grpc_proj`
+1. Через Docker
   - Настраиваем `docker-compose.yml` и `configs/config.yml` под себя.
   - `docker-compose up --build grpc_proj`
-  - Создать таблицы для СУБД (PostgreSQL, ClickHouse).
 
 2. Локально руками
   - Поднимаем окружение. Как это сделать: [тут](https://github.com/babtiss/grpc_proj/tree/master/assets).
