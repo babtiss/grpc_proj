@@ -7,5 +7,5 @@ COPY ./ ./
 
 RUN go mod download
 RUN go build -o grpc_proj ./cmd/server/main.go
-
+RUN go clean -modcache
 CMD ["./grpc_proj"]
